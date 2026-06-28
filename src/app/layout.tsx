@@ -1,3 +1,4 @@
+// TODO Task 10: add DM Serif Display + Inter via next/font/google
 import type { Metadata } from "next";
 import "@/styles/globals.css";
 
