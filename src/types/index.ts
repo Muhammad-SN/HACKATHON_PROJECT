@@ -4,7 +4,7 @@ export type AccountTier = 'free' | 'premium'
 export type UserRole = 'user' | 'admin'
 export type StakesLevel = 'low' | 'high'
 export type ClassificationSource =
-  | 'rules_list' | 'ai_suggestion' | 'admin_override' | 'pending_review'
+  | 'rules_list' | 'pending_review' | 'admin_override'
 export type SessionType = 'diagnostic' | 'adaptive'
 export type ExamDomain =
   | 'medical' | 'legal' | 'finance' | 'engineering'

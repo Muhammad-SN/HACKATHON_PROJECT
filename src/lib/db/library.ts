@@ -1,4 +1,5 @@
 import { getPool } from '@/lib/db/pool'
+import type { ClassificationSource } from '@/types'
 
 export interface ExamRow {
   id:                   string
@@ -9,7 +10,7 @@ export interface ExamRow {
   ownerId:              string
   ownerName:            string
   questionCount:        number
-  classificationSource: string
+  classificationSource: ClassificationSource
 }
 
 export async function listCommunityExams(search?: string): Promise<ExamRow[]> {
@@ -53,7 +54,7 @@ export async function getExamForAccessCheck(examId: string): Promise<{
   ownerId:              string
   stakesLevel:          'low' | 'high'
   isPublic:             boolean
-  classificationSource: string
+  classificationSource: ClassificationSource
 } | null> {
   const { rows } = await getPool().query(
     `SELECT created_by, stakes_level, is_public, classification_source FROM exams WHERE id = $1`,
@@ -70,7 +71,7 @@ export async function getExamForAccessCheck(examId: string): Promise<{
     ownerId:              r.created_by,
     stakesLevel:          r.stakes_level as 'low' | 'high',
     isPublic:             r.is_public,
-    classificationSource: r.classification_source,
+    classificationSource: r.classification_source as ClassificationSource,
   }
 }
 
@@ -84,6 +85,6 @@ function mapExamRow(r: Record<string, unknown>): ExamRow {
     ownerId:              r['created_by']            as string,
     ownerName:            r['owner_name']            as string,
     questionCount:        r['question_count']        as number,
-    classificationSource: r['classification_source'] as string,
+    classificationSource: r['classification_source'] as ClassificationSource,
   }
 }

@@ -81,3 +81,28 @@ Task 4: complete (commit 7c4c349, spec ✅, quality ✅) — GET /api/exams/[exa
 Task 5: complete (commit 51bc11c, spec ✅, quality ✅, security ✅) — GET /api/admin/review-queue + POST /api/admin/classify + POST /api/admin/publish — all use requireAdmin(), never manual role check (6 tests)
 Task 6: complete (commit af247d1, spec ✅, quality ✅) — /library server page + StakesBadge + ExamCard + LibraryFilter components — NOTE: --space-5 missing from tokens.css, ExamCard uses --space-4 fallback
 Task 7: complete (commit 6fc957e, spec ✅, quality ✅) — /admin server page + ReviewQueueTable + AuditLogTable; pushed to origin — MEDIUM: buttons need type="button", th cells need scope="col", fetch errors should surface before reload
+
+## Phase 9 — Polish
+
+Base commit: cfaf81c
+
+Task 1: complete (commit 4d5655f, spec ✅, quality ✅) — --space-10/--space-20 added, /api/onboarding/search rate-limit exempted
+Task 2: complete (commit 01557e2, spec ✅, quality ✅) — 6 loading.tsx skeletons: root, dashboard, library, admin, diagnostic, study/[sessionId]
+Task 3: complete (commit 84bff9e, spec ✅, quality ✅) — 4 error.tsx boundaries: root, dashboard, library, admin (all 'use client')
+Task 4: complete (commit d813007, spec ✅, quality ✅) — purge-deleted cron route + 4 Vitest tests + vercel.json schedule
+Task 5: complete (commit dda9988, spec ✅, quality ✅) — Nav component + layout wiring
+Task 6: complete (commit e3b6bfb, spec ✅, quality ✅) — responsive.css, globals.css import, dashboard/library className hooks
+
+## Pre-Phase 9 Gap Resolution
+
+Base commit: e3b6bfb
+
+Gap-1: complete (commit 2196e9c, spec ✅, quality ✅) — Integration test isolation: renamed pool.test.ts→pool.integration.test.ts and migrate.test.ts→migrate.integration.test.ts; added vitest.config.integration.ts (node env, includes *.integration.test.ts); vitest.config.ts now excludes *.integration.test.ts; package.json gains test:integration script; pnpm test 0 failures without DATABASE_URL; 171 tests pass
+
+Gap-2: pending commit — src/lib/engines/generator.ts: generateQuestionsFromChunk pure engine (single-prompt Claude Haiku/Sonnet MCQ pipeline, JSON parse with empty-array fallback, returns { questions, inputTokens, outputTokens }); src/tests/lib/engines/generator.test.ts (6 tests); engine has zero DB calls
+
+Gap-3: pending commit — src/lib/engines/socratic.ts: generateSocraticExplanation pure engine (3 steps via DELIMITER split for wrong answers, 1 reinforcing step for correct, returns { steps, inputTokens, outputTokens }); src/tests/lib/engines/socratic.test.ts (6 tests); src/app/api/study/socratic/route.ts refactored to delegate to engine (response keeps both steps[] and explanation string for backward compat with StudySession.tsx)
+
+Gap-4: pending commit — src/tests/lib/ai/usage.test.ts (3 tests): trackUsage INSERT column coverage via vi.hoisted mock of getPool; previously zero test coverage on trackUsage
+
+Gap-5: pending — ClassificationSource type mismatch: src/lib/access/check.ts line 2 has wrong values ('manual'|'ai'|'rules'|'pending_review') — must become 'rules_list'|'pending_review'|'admin_override' to match DB CHECK constraint and src/types/index.ts; fix also requires updating BASE.classificationSource in src/tests/lib/access/check.test.ts line 9 from 'manual' → 'rules_list'

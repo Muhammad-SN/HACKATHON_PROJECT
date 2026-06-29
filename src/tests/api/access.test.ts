@@ -45,7 +45,7 @@ describe('GET /api/exams/[examId]/access', () => {
   it('returns granted:true for public low-stakes exam', async () => {
     mockGetExam.mockResolvedValueOnce({
       ownerId: 'owner-1', stakesLevel: 'low', isPublic: true,
-      classificationSource: 'manual',
+      classificationSource: 'rules_list',
     })
     mockHasAccess.mockResolvedValueOnce(false)
     const req = new Request('http://localhost')

@@ -3,7 +3,7 @@ import { requireAuth } from '@/lib/api/auth-guard'
 import { getExamForAccessCheck } from '@/lib/db/library'
 import { hasExamAccess } from '@/lib/db/billing'
 import { checkExamAccess } from '@/lib/access/check'
-import type { ClassificationSource } from '@/lib/access/check'
+import type { ClassificationSource } from '@/types'
 
 export const dynamic = 'force-dynamic'
 

@@ -67,7 +67,7 @@ export async function getAuditLog(limit = 50): Promise<AuditLogRow[]> {
 export async function saveClassification(
   examId: string,
   stakesLevel: 'low' | 'high',
-  source: 'ai_suggestion' | 'rules_list' | 'admin_override'
+  source: 'rules_list' | 'admin_override'
 ): Promise<void> {
   await getPool().query(
     `UPDATE exams SET stakes_level = $2, classification_source = $3 WHERE id = $1`,

@@ -6,7 +6,7 @@ const BASE = {
   ownerId:              'owner-1',
   stakesLevel:          'low' as const,
   isPublic:             true,
-  classificationSource: 'manual' as const,
+  classificationSource: 'rules_list' as const,
 }
 
 describe('checkExamAccess', () => {

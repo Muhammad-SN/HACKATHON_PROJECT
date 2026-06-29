@@ -1,5 +1,5 @@
 export type StakesLevel = 'low' | 'high'
-export type ClassificationSource = 'manual' | 'ai' | 'rules' | 'pending_review'
+export type ClassificationSource = 'rules_list' | 'pending_review' | 'admin_override'
 export type AccountTier = 'free' | 'premium'
 
 export interface ExamContext {

@@ -21,7 +21,7 @@ vi.mock('@/lib/access/classifier', () => ({
 vi.mock('@/lib/db/pool', () => ({
   getPool: vi.fn().mockReturnValue({
     query: vi.fn().mockResolvedValue({
-      rows: [{ name: 'Test Exam', description: '', classification_source: 'manual' }],
+      rows: [{ name: 'Test Exam', description: '', classification_source: 'rules_list' }],
     }),
   }),
 }))
