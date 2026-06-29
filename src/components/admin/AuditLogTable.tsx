@@ -11,7 +11,7 @@ export default function AuditLogTable({ log }: { log: AuditLogRow[] }) {
       <thead>
         <tr style={{ borderBottom: '1px solid var(--color-border)' }}>
           {['Admin', 'Action', 'Target', 'Date'].map((h) => (
-            <th key={h} style={{ textAlign: 'left', padding: 'var(--space-3) var(--space-2)', color: 'var(--color-text-muted)', fontWeight: 600 }}>
+            <th key={h} scope="col" style={{ textAlign: 'left', padding: 'var(--space-3) var(--space-2)', color: 'var(--color-text-muted)', fontWeight: 600 }}>
               {h}
             </th>
           ))}
