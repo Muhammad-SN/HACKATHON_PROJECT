@@ -33,7 +33,11 @@ const PUBLIC_PATHS = new Set(['/login', '/register', '/pricing', '/'])
 export default auth((req: NextRequest & { auth: unknown }) => {
   const { pathname } = req.nextUrl
 
-  if (pathname.startsWith('/_next') || pathname === '/api/health') {
+  if (
+    pathname.startsWith('/_next') ||
+    pathname === '/api/health' ||
+    pathname === '/api/onboarding/search'
+  ) {
     return NextResponse.next()
   }
 
