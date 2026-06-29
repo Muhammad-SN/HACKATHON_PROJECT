@@ -1,17 +1,15 @@
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import { requireAuth } from '@/lib/api/auth-guard'
-import Anthropic from '@anthropic-ai/sdk'
+import { generateSocraticExplanation } from '@/lib/engines/socratic'
 import { trackUsage } from '@/lib/ai/usage'
 
 const Schema = z.object({
-  questionStem: z.string().min(1).max(2000),
-  chosenOption: z.string().min(1).max(500),
+  questionStem:  z.string().min(1).max(2000),
+  chosenOption:  z.string().min(1).max(500),
   correctOption: z.string().min(1).max(500),
-  isCorrect: z.boolean(),
+  isCorrect:     z.boolean(),
 })
-
-const anthropic = new Anthropic({ apiKey: process.env['ANTHROPIC_API_KEY'] })
 
 export async function POST(req: Request) {
   const { user, error } = await requireAuth()
@@ -23,35 +21,24 @@ export async function POST(req: Request) {
   const parsed = Schema.safeParse(body)
   if (!parsed.success) return NextResponse.json({ error: 'Invalid request' }, { status: 422 })
 
-  const { questionStem, chosenOption, correctOption, isCorrect } = parsed.data
+  const apiKey = process.env['ANTHROPIC_API_KEY']
+  if (!apiKey) return NextResponse.json({ error: 'AI not configured' }, { status: 500 })
 
   const model = user!.tier === 'premium' ? 'claude-sonnet-4-6' : 'claude-haiku-4-5-20251001'
 
-  const prompt = isCorrect
-    ? `The student answered correctly. Reinforce their understanding with a brief 2-sentence Socratic explanation of WHY this answer is right, encouraging deeper thinking.
-
-Question: ${questionStem}
-Correct answer: ${correctOption}`
-    : `The student answered incorrectly. Using the Socratic method, guide them to understand why their answer was wrong without simply stating the correct answer.
-
-Question: ${questionStem}
-Student chose: ${chosenOption}
-Correct answer: ${correctOption}
-
-Write 2-3 sentences that ask guiding questions and help them reason through the correct answer.`
-
   try {
-    const message = await anthropic.messages.create({
-      model,
-      max_tokens: 300,
-      messages: [{ role: 'user', content: prompt }],
+    const result = await generateSocraticExplanation({ ...parsed.data, model, apiKey })
+
+    await trackUsage(user!.id, 'socratic_explanation', model, result.inputTokens, result.outputTokens)
+
+    return NextResponse.json({
+      success: true,
+      data: {
+        steps:       result.steps,
+        explanation: result.steps.join('\n\n'),
+      },
+      error: null,
     })
-
-    const text = message.content[0]?.type === 'text' ? message.content[0].text : ''
-
-    await trackUsage(user!.id, 'socratic_explanation', model, message.usage.input_tokens, message.usage.output_tokens)
-
-    return NextResponse.json({ success: true, data: { explanation: text }, error: null })
   } catch (err) {
     const msg = err instanceof Error ? err.message : 'AI error'
     return NextResponse.json({ error: msg }, { status: 500 })
