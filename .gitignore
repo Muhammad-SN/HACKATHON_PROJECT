@@ -28,7 +28,9 @@ yarn-error.log*
 
 # env files
 .env
-.env*.local
+.env*
+coverage_output.txt
+coverage_report.txt
 
 # vercel
 .vercel
