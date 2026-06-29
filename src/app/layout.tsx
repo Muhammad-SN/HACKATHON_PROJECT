@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { DM_Serif_Display, Inter } from 'next/font/google'
 import '@/styles/globals.css'
+import Nav from '@/components/ui/Nav'
 
 const dmSerifDisplay = DM_Serif_Display({
   weight: ['400'],
@@ -34,7 +35,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${dmSerifDisplay.variable} ${inter.variable}`}>
-      <body>{children}</body>
+      <body><Nav />{children}</body>
     </html>
   )
 }
