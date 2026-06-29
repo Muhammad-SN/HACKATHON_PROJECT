@@ -42,3 +42,42 @@ Base commit: f964974
 Task A: complete (commit f5ddd03, spec ✅, quality ✅) — src/lib/s3/presigned.ts + src/lib/lambda/invoke.ts + /api/upload/presigned-url + /api/upload/text + /api/upload/status
 Task B: complete (commit 752d218, spec ✅, quality ✅) — Lambda processor: lambda/src/{index,db,chunker,processor}.ts — Claude Haiku question generation, auto-promotes to rules_list if ≥10 questions
 Task C: complete (commit d5e19ab, spec ✅, quality ✅) — /upload server page + UploadForm client component (text paste → processing → done); pushed to origin
+
+## Phase 5 — Adaptive Study Session
+
+Base commit: d5e19ab
+
+Task 1: complete (commit f83d449, spec ✅, quality ✅) — BKT mastery updater (bkt.ts), SM-2 spaced repetition scheduler (sm2.ts), multi-criteria next-question selector (selector.ts), study DB layer (src/lib/db/study.ts)
+Task 2: complete (commit 6f59d1e, spec ✅, quality ✅) — POST /api/study/next-question + POST /api/study/answer API routes; /study/[sessionId] server page + QuestionCard + AnswerChoices + SocraticPanel client components; pushed to origin
+
+## Phase 6 — Readiness Dashboard
+
+Base commit: 6f59d1e
+
+Task 1: complete (commit 38f7fab, spec ✅, quality ✅) — src/lib/engines/readiness.ts: predictedScore (weighted mastery aggregation), confidenceInterval (1.96 sigma CI)
+Task 2: complete (commit 7caecc0, spec ✅, quality ✅) — src/lib/db/progress.ts: getUserTopicMastery, getWeakTopics, TopicMasteryRow
+Task 3: complete (commit 0172579, spec ✅, quality ✅) — GET /api/progress/readiness + GET /api/progress/mastery API routes
+Task 4: complete (commit 225d566, spec ✅, quality ✅) — /progress dark-mode server page + ReadinessIsland + MasteryHeatMap + WeakAreaCard components; pushed to origin
+
+## Phase 7 — Monetization
+
+Base commit: 225d566
+
+Task 1: complete (commit 2555a0e, spec ✅, quality ✅) — src/lib/db/billing.ts: getStripeCustomerId, saveStripeCustomerId, setUserPremium, setUserFree, recordExamPurchase, hasExamAccess, getPurchaseHistory, getUserTier
+Task 2: complete (commit 3357a6a, spec ✅, quality ✅, security ✅) — src/lib/stripe/{client,customer,checkout,portal}.ts — lazy customer creation, subscription + per-exam checkout, Billing Portal; API version 2025-02-24.acacia
+Task 3: complete (commit 2f2946a, spec ✅, quality ✅) — POST /api/billing/checkout + POST /api/billing/portal + POST /api/exams/[examId]/purchase API routes
+Task 4: complete (commit fc68f59, spec ✅, quality ✅, security ✅) — POST /api/webhooks/stripe: raw body via req.text(), constructEvent sig verification, handles checkout.session.completed (subscription->premium, payment->exam_purchase) and customer.subscription.deleted (->free); ONLY place users.tier is set to premium
+Task 5: complete (commit 996f071, spec ✅, quality ✅) — /pricing public static page: Free vs Premium comparison grid
+Task 6: complete (commit f7ad065, spec ✅, quality ✅) — /settings auth-gated page + TierBadge + UpgradeCTA + PurchaseHistoryTable components; pushed to origin
+
+## Phase 8 — Library & Admin
+
+Base commit: f7ad065
+
+Task 1: complete (commit 16cb08a, spec ✅, quality ✅) — src/lib/access/check.ts: checkExamAccess pure function, zero DB calls (6 tests) — pending_review always denied, high-stakes gated on purchase not tier
+Task 2: complete (commit 18fc4a6, spec ✅, quality ✅) — src/lib/access/classifier.ts: classifyByRules (regex keyword list), classifyWithAI (Claude Haiku fallback), classifyExam orchestrator (4 tests)
+Task 3: complete (commit 995b6f4, spec ✅, quality ✅) — src/lib/db/library.ts + src/lib/db/admin.ts — NOTE: schema uses created_by/name on exams table; audit_log table with actor_id + metadata JSONB; classification_source values are ai_suggestion/rules_list/admin_override
+Task 4: complete (commit 7c4c349, spec ✅, quality ✅) — GET /api/exams/[examId]/access + GET /api/exams (tab=community|mine + search) API routes (3 tests)
+Task 5: complete (commit 51bc11c, spec ✅, quality ✅, security ✅) — GET /api/admin/review-queue + POST /api/admin/classify + POST /api/admin/publish — all use requireAdmin(), never manual role check (6 tests)
+Task 6: complete (commit af247d1, spec ✅, quality ✅) — /library server page + StakesBadge + ExamCard + LibraryFilter components — NOTE: --space-5 missing from tokens.css, ExamCard uses --space-4 fallback
+Task 7: complete (commit 6fc957e, spec ✅, quality ✅) — /admin server page + ReviewQueueTable + AuditLogTable; pushed to origin — MEDIUM: buttons need type="button", th cells need scope="col", fetch errors should surface before reload
