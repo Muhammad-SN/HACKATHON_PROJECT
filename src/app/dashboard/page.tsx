@@ -293,12 +293,6 @@ function DashboardContent({
   };
 
   // ACTION TILES
-  const tilesGridStyle: CSSProperties = {
-    display: "grid",
-    gridTemplateColumns: "repeat(3, 1fr)",
-    gap: "var(--space-4)",
-  };
-
   const tileBaseStyle: CSSProperties = {
     borderRadius: "var(--radius-lg)",
     padding: "var(--space-6)",
@@ -365,12 +359,6 @@ function DashboardContent({
   });
 
   // MASTERY HEATMAP
-  const heatmapGridStyle: CSSProperties = {
-    display: "grid",
-    gridTemplateColumns: "repeat(4, 1fr)",
-    gap: "var(--space-3)",
-  };
-
   const topicCardStyle: CSSProperties = {
     background: "var(--color-surface-dark)",
     border: "1px solid var(--color-border-dark)",
@@ -499,7 +487,7 @@ function DashboardContent({
       </nav>
 
       {/* ── MAIN ── */}
-      <main style={mainStyle}>
+      <main style={mainStyle} className="dashboard-main">
         {/* ── READINESS ISLAND ── */}
         <section aria-labelledby="readiness-heading">
           <p style={sectionHeadingStyle} id="readiness-heading">
@@ -615,7 +603,7 @@ function DashboardContent({
           <p style={sectionHeadingStyle} id="actions-heading">
             Quick Actions
           </p>
-          <div style={tilesGridStyle}>
+          <div className="tiles-grid">
             {/* Tile A */}
             <div style={tileAStyle} role="button" tabIndex={0}>
               <span style={tileEmojiStyle} aria-hidden="true">
@@ -666,7 +654,7 @@ function DashboardContent({
           <p style={sectionHeadingStyle} id="mastery-heading">
             Topic Mastery
           </p>
-          <div style={heatmapGridStyle}>
+          <div className="mastery-grid">
             {topics.map((t) => {
               const color = levelColor(t.level);
               const badgeStyle: CSSProperties = {

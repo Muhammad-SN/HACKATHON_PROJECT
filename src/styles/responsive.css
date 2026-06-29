@@ -1,0 +1,64 @@
+/* Mobile-first responsive overrides for CogniPrep */
+
+/* Nav links — hide on mobile */
+.cogni-nav-links {
+  display: flex;
+}
+@media (max-width: 768px) {
+  .cogni-nav-links {
+    display: none;
+  }
+}
+
+/* Dashboard: 3-col action tiles → 2-col → 1-col */
+.tiles-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+}
+@media (max-width: 768px) {
+  .tiles-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 480px) {
+  .tiles-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Dashboard: 4-col mastery heatmap → 2-col → 1-col */
+.mastery-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-3);
+}
+@media (max-width: 1024px) {
+  .mastery-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 480px) {
+  .mastery-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Library exam card grid — auto-fill */
+.library-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-4);
+}
+@media (max-width: 480px) {
+  .library-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Dashboard main — reduce padding on mobile */
+@media (max-width: 768px) {
+  .dashboard-main {
+    padding: var(--space-6) var(--space-4) var(--space-12) !important;
+  }
+}

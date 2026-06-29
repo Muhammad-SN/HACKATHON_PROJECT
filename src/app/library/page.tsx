@@ -62,13 +62,7 @@ export default async function LibraryPage({
               : 'No exams found.'}
           </p>
         ) : (
-          <div
-            style={{
-              display:             'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-              gap:                 'var(--space-4)',
-            }}
-          >
+          <div className="library-grid">
             {exams.map((exam) => (
               <ExamCard key={exam.id} exam={exam} />
             ))}
